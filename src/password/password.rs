@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 pub struct Passwords {
     passwords: Vec<Password>,
 }
@@ -18,7 +20,7 @@ impl Passwords {
     }
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Password {
     pub id: String,
     pub url: String,
