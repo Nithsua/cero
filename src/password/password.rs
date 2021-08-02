@@ -18,20 +18,26 @@ impl Passwords {
     pub fn length_of_passwords(&self) -> usize {
         self.passwords.len()
     }
+
+    pub fn get(&self, index: usize) -> &Password {
+        &self.passwords[index]
+    }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Password {
     pub id: String,
+    pub name: String,
     pub url: String,
     pub username: String,
     pub password: String,
 }
 
 impl Password {
-    pub fn new(url: String, username: String, password: String) -> Self {
+    pub fn new(name: String, url: String, username: String, password: String) -> Self {
         Password {
-            id: "  ".to_string(),
+            id: uuid::Uuid::new_v4().to_string(),
+            name: name,
             url: url,
             username: username,
             password: password,

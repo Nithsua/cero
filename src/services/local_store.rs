@@ -21,6 +21,12 @@ pub fn read_from_local_store<K: std::convert::AsRef<[u8]>>(key: K) -> Password {
     password
 }
 
+pub fn delete_from_local_store<K: AsRef<[u8]>>(key: K) {
+    let home_dir = std::env::var("HOME").unwrap();
+    let local_store = open(format!("{}/.cerostore", home_dir)).expect("Open");
+    local_store.remove(key);
+}
+
 pub fn read_all_the_data() -> Passwords {
     let home_dir = std::env::var("HOME").unwrap();
     let mut passwords = Vec::<Password>::new();
