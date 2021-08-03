@@ -14,6 +14,25 @@ fn cls() {
 
 fn password_generation_interface() -> String {
     let mut temp_string = String::new();
+    let mut length: u8;
+    loop {
+        temp_string.clear();
+        print!("Length of the password(8-32): ");
+        io::stdout().flush().expect("Unable to flush the stdout");
+        io::stdin().read_line(&mut temp_string).unwrap();
+        length = match temp_string.trim().parse::<u8>() {
+            Ok(len) => len,
+            Err(_) => {
+                println!("Unable to parse the input, try entering a correct option again");
+                continue;
+            }
+        };
+        if length >= 8 && length <= 32 {
+            break;
+        }
+        println!("The password length should range from 8 to 32");
+    }
+    temp_string.clear();
     print!("Include Special Characters (y/n): ");
     io::stdout().flush().expect("Unable to flush the stdout");
     io::stdin().read_line(&mut temp_string).unwrap();
@@ -39,7 +58,7 @@ fn password_generation_interface() -> String {
     };
 
     generate_password(
-        16,
+        length,
         include_numbers,
         include_special_characters,
         include_spaces,
@@ -72,7 +91,10 @@ fn print_the_list(passwords: &Passwords) -> usize {
 
     let mut i = 1;
     for v in passwords.get_passwords() {
-        println!("{}. {:?}", i, v);
+        println!(
+            "{}. {}{{ url:{}, username:{}, password:{} }}",
+            i, v.name, v.url, v.username, v.password
+        );
         i += 1;
     }
     length
